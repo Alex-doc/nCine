@@ -54,7 +54,7 @@ IAppEventHandler &Qt5Widget::appEventHandler()
 
 bool Qt5Widget::event(QEvent *event)
 {
-	Qt5InputManager &inputManager = static_cast<Qt5InputManager &>(application_.inputManager());
+	Qt5InputManager *inputManager = static_cast<Qt5InputManager *>(&application_.inputManager());
 
 	switch (event->type())
 	{
@@ -73,7 +73,7 @@ bool Qt5Widget::event(QEvent *event)
 		case QEvent::TouchUpdate:
 		case QEvent::TouchEnd:
 		case QEvent::Wheel:
-			return inputManager.event(event);
+			return inputManager ? inputManager->event(event) : false;
 		case QEvent::Close:
 		case QEvent::Quit:
 			shutdown();
